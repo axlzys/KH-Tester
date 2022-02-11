@@ -13,3 +13,5 @@ Instructions in English translated by Google
 
 本项目遵循《GNU通用公共许可证V3.0》，您可以对本项目进行任意二次开发，修改，但不得用于商业项目，部分功能已有专利。
 
+IMG文件：链接：https://pan.baidu.com/s/1iEEIiVbKctjeFx8JXDhr9g 
+提取码：hmdo
