@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KH结果列表</title>
+
+		<style type="text/css">
+			/*表格样式*/
+			table {
+				width: 90%;
+				background: #ccc;
+				margin: 10px auto;
+				border-collapse: collapse;/*border-collapse:collapse合并内外边距(去除表格单元格默认的2个像素内外边距*/
+			}
+			th,td {
+				height: 25px;
+				line-height: 25px;
+				text-align: center;
+				border: 1px solid #ccc;
+			}
+			th {
+				background: #eee;
+				font-weight: normal;
+			}
+			tr {
+				background: #fff;
+			}
+			tr:hover {
+				background: #cc0;
+			}
+			td a {
+				color: #06f;
+				text-decoration: none;
+			}
+			td a:hover {
+				color: #06f;
+				text-decoration: underline;
+			}
+		</style>
+        <style>
+        div.top
+{
+    text-align:center;
+    font-size:15px;
+    background-color:#cccccc;
+}
+            body
+    body,h1{margin: 0;padding:0}
+        </style>
+</head>
+<body>
+<div class="top" ><h1>Reef KH Tester</h1></div>
+<p><a style="margin: 20px;font-size:20px"href="{{ url_for('main') }}" rel="external nofollow" >返回首页(HOME)</a></p>
+<table class="table table-striped">
+    <tr>
+        <th>序号(No.)</th>
+        <th>日期(Date)</th>
+        <th>时间(Time)</th>
+        <th>结果(Result)</th>
+        <th>滴定(Titration)</th>
+    </tr>
+    {% for KHResult  in KHResultlist %}
+        <tr>
+            <td>{{ KHResult.id }}</td>
+            <td>{{ KHResult.Date }}</td>
+            <td>{{ KHResult.Time }}</td>
+            <td>{{ KHResult.KHresult }}</td>
+            <td>{{ KHResult.ADDKH }}</td>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

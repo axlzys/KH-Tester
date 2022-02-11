@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Setting</title>
+    <script src="/static/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="static/echarts.js"></script>
+<script src="static/jAlert.js"></script>
+    <style>
+        div.top
+{
+    text-align:center;
+    font-size:15px;
+    background-color:#cccccc;
+}
+        body
+    body,h1{margin: 0;padding:0}
+
+.sett {
+  float: left;
+  width: 50%;
+}
+
+</style>
+</head>
+<body>
+<div class="top" ><h1>Reef KH Tester</h1></div>
+<p><a style="margin: 20px;font-size:20px"href="{{ url_for('main') }}" rel="external nofollow" >返回首页(HOME)</a></p>
+
+<div class="sett">
+<div style="margin-left:40px;">
+<div>
+    <button class="bt3" style="text-align:center;font-size:20px;height: 35px; line-height: 35px; padding: 0 30px;margin: 20px;color: #fff;background-color: #1F7EFE; border-radius: 5px; cursor: pointer;">校准PH电极(Calibration PH Probe)</button>
+</div>
+<div>
+    <button class="CalibrationSPV" style="text-align:center;font-size:20px;height: 35px; line-height: 35px; padding: 0 30px;margin: 20px;color: #fff;background-color: #1F7EFE; border-radius: 5px; cursor: pointer;">校准反应仓容积(Calibration reaction chamber volume)</button>
+</div>
+    <p>当前反应仓容积为(Current reaction chamber volume): <span id="samplev"></span><span>毫升(ml)</span></p>
+<form>
+设置反应仓容积(Set reaction chamber volume)：<input style="width:140px;padding: 5px;margin: 20px;font-size:15px;"type="number" step="0.01" id="sampleV1" name="sampleV1">
+<input style="font-size:20px;height: 35px; line-height: 35px; padding: 0 30px;margin: 20px;color: #fff;background-color: #1F7EFE; border-radius: 5px; cursor: pointer;" type="button" value="确定(OK)" class="setSPV"/>
+</form>
+<div>
+    <button class="CalibrationACIV" style="text-align:center;font-size:20px;height: 35px; line-height: 35px; padding: 0 30px;margin: 20px;color: #fff;background-color: #1F7EFE; border-radius: 5px; cursor: pointer;">校准药水泵流量(Calibration Reagent pump flow)</button>
+</div>
+<form>
+    <p>当前药水泵流量为(current reagent pump flow): <span id="ACIV1"></span><span>毫升每100滴（ml per 100 drops）</span></p>
+设置药水泵流量（100滴）set eagent pump flow（100 drops）：<input style="width:60px;padding: 5px;margin: 20px;font-size:15px;" type="number" step="0.01" id="ACIV" name="ACIV">
+<input style="font-size:20px;height: 35px; line-height: 35px; padding: 0 30px;margin: 20px;color: #fff;background-color: #1F7EFE; border-radius: 5px; cursor: pointer;" type="button" value="确定OK" class="setACIV"/>
+</form>
+<div>
+    <button class="CalibrationKHpump" style="text-align:center;font-size:20px;height: 35px; line-height: 35px; padding: 0 30px;margin: 20px;color: #fff;background-color: #1F7EFE; border-radius: 5px; cursor: pointer;">校准滴定泵流量（Calibration Titration Pump flow)）</button>
+</div>
+<form>
+    <p>当前滴定泵流量为（current Titration Pump flow）: <span id="KHpump1"></span><span>毫升/10秒（ml/s）</span></p>
+设置滴定泵流量（set Titration Pump flow）：<input style="width:60px;padding: 5px;margin: 20px;font-size:15px;" type="number" step="0.01" id="KHpump" name="KHpump">
+<input style="font-size:20px;height: 35px; line-height: 35px; padding: 0 30px;margin: 20px;color: #fff;background-color: #1F7EFE; border-radius: 5px; cursor: pointer;" type="button" value="确定OK" class="KHpump"/>
+</form>
+</div>
+</div>
+<div class="sett">
+    <div style="margin-left:40px;">
+        <div>
+        <button class="openinpump" style="text-align:center;font-size:20px;height: 35px; line-height: 35px; padding: 0 30px;margin: 20px;color: #fff;background-color: #1F7EFE; border-radius: 5px; cursor: pointer;">开启进水泵(Open Water-in Pump)</button>
+        <button class="closeinpump" style="text-align:center;font-size:20px;height: 35px; line-height: 35px; padding: 0 30px;margin: 20px;color: #fff;background-color: #1F7EFE; border-radius: 5px; cursor: pointer;">关闭进水泵(Close Water-in Pump)</button>
+        </div>
+        <div>
+        <button class="openoutpump" style="text-align:center;font-size:20px;height: 35px; line-height: 35px; padding: 0 30px;margin: 20px;color: #fff;background-color: #1F7EFE; border-radius: 5px; cursor: pointer;">开启排水泵(Open Water-out Pump)</button>
+        <button class="closeoutpump" style="text-align:center;font-size:20px;height: 35px; line-height: 35px; padding: 0 30px;margin: 20px;color: #fff;background-color: #1F7EFE; border-radius: 5px; cursor: pointer;">关闭排水泵(Close Water-out Pump)</button>
+        </div>
+        <div>
+        <button class="openKHpump" style="text-align:center;font-size:20px;height: 35px; line-height: 35px; padding: 0 30px;margin: 20px;color: #fff;background-color: #1F7EFE; border-radius: 5px; cursor: pointer;">开启滴定泵(Open Titration Pump)</button>
+        <button class="closeKHpump" style="text-align:center;font-size:20px;height: 35px; line-height: 35px; padding: 0 30px;margin: 20px;color: #fff;background-color: #1F7EFE; border-radius: 5px; cursor: pointer;">关闭滴定泵(Close Titration Pump)</button>
+        </div>
+        <div>
+        <button class="openpharmacypump" style="text-align:center;font-size:20px;height: 35px; line-height: 35px; padding: 0 30px;margin: 20px;color: #fff;background-color: #1F7EFE; border-radius: 5px; cursor: pointer;">开启药水泵(Open Reagent Pump)</button>
+        <button class="closepharmacypump" style="text-align:center;font-size:20px;height: 35px; line-height: 35px; padding: 0 30px;margin: 20px;color: #fff;background-color: #1F7EFE; border-radius: 5px; cursor: pointer;">关闭药水泵(Close Reagent Pump)</button>
+        </div>
+    </div>
+</div>
+
+<script>
+	var log1 = console.log.bind(console);
+	$(function () {
+		$(".bt3").click(function () {
+			jConfirm('提示', '请确认已将PH电极放入标准液中！', '确定', function () {
+      $.getJSON('/CalibrationKH', function(data) {
+        alert(data);
+      });
+      log1('操作成功！')
+			})
+		});
+	})
+
+    var log2 = console.log.bind(console);
+	$(function () {
+		$(".CalibrationSPV").click(function () {
+			jConfirm('提示', '是否校准反应仓容积？', '确定', function () {
+      $.getJSON('/CalibrationSPV', function(data) {
+        alert(data);
+      });
+      log2('操作成功！')
+			})
+		});
+	})
+
+        var log3 = console.log.bind(console);
+	$(function () {
+		$(".CalibrationACIV").click(function () {
+			jConfirm('提示', '是否校准药水泵流量？', '确定', function () {
+      $.getJSON('/CalibrationACIV', function(data) {
+        alert(data);
+      });
+      log3('操作成功！')
+			})
+		});
+	})
+
+            var log4 = console.log.bind(console);
+	$(function () {
+		$(".CalibrationKHpump").click(function () {
+			jConfirm('提示', '是否校准滴定泵流量？', '确定', function () {
+      $.getJSON('/CalibrationKHpump', function(data) {
+        alert(data);
+      });
+      log4('操作成功！')
+			})
+		});
+	})
+
+    var log5 = console.log.bind(console);
+	$(function () {
+		$(".openinpump").click(function () {
+			jConfirm('提示', '是否开启进水泵？', '确定', function () {
+      $.getJSON('/Inpumpon', function(data) {
+        alert(data);
+      });
+      log5('操作成功！')
+			})
+		});
+	})
+
+        var log6 = console.log.bind(console);
+	$(function () {
+		$(".closeinpump").click(function () {
+			jConfirm('提示', '是否关闭进水泵？', '确定', function () {
+      $.getJSON('/Inpumpoff', function(data) {
+        alert(data);
+      });
+      log6('操作成功！')
+			})
+		});
+	})
+            var log7 = console.log.bind(console);
+	$(function () {
+		$(".openoutpump").click(function () {
+			jConfirm('提示', '是否开启出水泵？', '确定', function () {
+      $.getJSON('/Outpumpon', function(data) {
+        alert(data);
+      });
+      log7('操作成功！')
+			})
+		});
+	})
+            var log8 = console.log.bind(console);
+	$(function () {
+		$(".closeoutpump").click(function () {
+			jConfirm('提示', '是否关闭出水泵？', '确定', function () {
+      $.getJSON('/Outpumpoff', function(data) {
+        alert(data);
+      });
+      log8('操作成功！')
+			})
+		});
+	})
+            var log9 = console.log.bind(console);
+	$(function () {
+		$(".openKHpump").click(function () {
+			jConfirm('提示', '是否开启滴定泵？', '确定', function () {
+      $.getJSON('/KHpumpon', function(data) {
+        alert(data);
+      });
+      log9('操作成功！')
+			})
+		});
+	})
+            var log10 = console.log.bind(console);
+	$(function () {
+		$(".closeKHpump").click(function () {
+			jConfirm('提示', '是否关闭滴定泵？', '确定', function () {
+      $.getJSON('/KHpumpoff', function(data) {
+        alert(data);
+      });
+      log10('操作成功！')
+			})
+		});
+	})
+            var log11 = console.log.bind(console);
+	$(function () {
+		$(".openpharmacypump").click(function () {
+			jConfirm('提示', '是否开启药水泵？', '确定', function () {
+      $.getJSON('/pharmacypumpon', function(data) {
+        alert(data);
+      });
+      log11('操作成功！')
+			})
+		});
+	})
+            var log12 = console.log.bind(console);
+	$(function () {
+		$(".closepharmacypump").click(function () {
+			jConfirm('提示', '是否开启关闭泵？', '确定', function () {
+      $.getJSON('/pharmacypumpoff', function(data) {
+        alert(data);
+      });
+      log12('操作成功！')
+			})
+		});
+	})
+</script>
+<script>
+
+    function f1() {
+        $('.setSPV').on('click', function () {
+            opt1 = $("#sampleV1").val();
+            $.ajax({
+        url: "{{ url_for('getSPV') }}",
+        type: "POST",
+        data: JSON.stringify({opt1}),
+        contentType: "application/json",
+        dataType: "json",
+        success: function(data){
+            alert("当前反应仓容积为："+data);
+        }
+    });
+        });
+}
+
+
+function f2(){
+$('.setACIV').on('click', function () {
+            opt2 = $("#ACIV").val();
+            $.ajax({
+        url: "{{ url_for('getACIV') }}",
+        type: "POST",
+        data: JSON.stringify({opt2}),
+        contentType: "application/json",
+        dataType: "json",
+        success: function(data){
+            alert("当前药水泵流量为："+data);
+        }
+    });
+        });
+}
+
+function f3(){
+$('.KHpump').on('click', function () {
+            opt3 = $("#KHpump").val();
+            $.ajax({
+        url: "{{ url_for('getKHpump') }}",
+        type: "POST",
+        data: JSON.stringify({opt3}),
+        contentType: "application/json",
+        dataType: "json",
+        success: function(data){
+            alert("当前药水泵流量为："+data);
+        }
+    });
+        });
+}
+
+function addLoadEvent(func){	//此函数由Simon Willison编写
+    var oldonload = window.onload;
+    if (typeof window.onload != 'function'){
+        window.onload = func;
+    }else {
+        window.onload = function(){
+            oldonload();
+            func();
+        }
+    }
+}
+
+addLoadEvent(f1);
+addLoadEvent(f2);
+addLoadEvent(f3);
+
+
+
+</script>
+<script>
+    var update1 = function () {
+// using jQuery (really not a must):
+$(document).ready(function(){
+    $.get("/readSPV",function(data){
+         $("#samplev").html(data);
+    });;
+});
+return update1;
+};
+$(document).ready(function(){
+setInterval(update1(), 2000);
+});
+    var update2 = function () {
+// using jQuery (really not a must):
+$(document).ready(function(){
+    $.get("/readACIV",function(data){
+         $("#ACIV1").html(data);
+    });;
+});
+return update2;
+};
+$(document).ready(function(){
+setInterval(update2(), 2000);
+});
+var update3 = function () {
+// using jQuery (really not a must):
+$(document).ready(function(){
+    $.get("/readKHpump",function(data){
+         $("#KHpump1").html(data);
+    });;
+});
+return update3;
+};
+$(document).ready(function(){
+setInterval(update3(), 2000);
+});
+</script>
+</body>
+
+</html>

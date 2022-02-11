@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reef KH Tester</title>
+<meta charset="utf-8">
+    {{ moment.include_moment() }}
+  {{ moment.locale('zh-cn') }}
+  {{ moment.locale('auto_detect=True') }}
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="/static/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="static/echarts.js"></script>
+<script src="static/jAlert.js"></script>
+<script>
+var update = function () {
+// using jQuery (really not a must):
+$("#timestamp1").html(moment().format('ll'));
+$("#timestamp").html(moment().format('LTS'));
+};
+$(document).ready(function(){
+setInterval(update, 100);
+});
+</script>
+<script>
+var update1 = function () {
+// using jQuery (really not a must):
+$(document).ready(function(){
+    $.get("/realtimePH",function(data){
+         $("#realtimeph").html(data);
+    });;
+});
+return update1;
+};
+$(document).ready(function(){
+setInterval(update1(), 30000);
+});
+var update4 = function () {
+// using jQuery (really not a must):
+$(document).ready(function(){
+    $.get("/realtimeKH",function(data){
+         $("#realtimeKh").html(data);
+    });;
+});
+return update4;
+};
+$(document).ready(function(){
+setInterval(update4(), 10000);
+});
+var update6 = function () {
+// using jQuery (really not a must):
+$(document).ready(function(){
+    $.get("/testpwm1",function(data){
+         $("#khtime1").html(data);
+    });;
+});
+return update6;
+};
+$(document).ready(function(){
+setInterval(update6(), 2000);
+});
+var update7 = function () {
+// using jQuery (really not a must):
+$(document).ready(function(){
+    $.get("/readtar",function(data){
+         $("#tarkh1").html(data);
+    });;
+});
+return update7;
+};
+$(document).ready(function(){
+setInterval(update7(), 2000);
+});
+</script>
+<script>
+	var log1 = console.log.bind(console);
+	$(function () {
+		$(".bt2").click(function () {
+			jConfirm('提示', '请确认已将PH电极放入标准液中！', '确定', function () {
+      $.getJSON('/CalibrationPH', function(data) {
+        alert(data);
+      });
+      log1('操作成功！')
+
+			})
+		});
+	})
+</script>
+
+<script>
+	var log2 = console.log.bind(console);
+	$(function () {
+		$(".bt4").click(function () {
+			jConfirm('提示', '是否立即测试KH？', '确定', function () {
+      $.get('/runkhtest', function(data) {
+          alert(data);
+      });
+      log2('操作成功！')
+			})
+		});
+	})
+
+</script>
+<script>
+
+    function f1() {
+                $('.khtimer').on('click', function () {
+            opt = $("#para_region").val();
+            $.ajax({
+        url: "{{ url_for('getjson') }}",
+        type: "POST",
+        data: JSON.stringify({opt}),
+        contentType: "application/json",
+        dataType: "json",
+        success: function(data){
+            alert("已经设定当前测试间隔为："+data+"小时。");
+        }
+    });
+        });
+}
+function f2() {
+        $('.tarkh').on('click', function () {
+            jConfirm('提示', '是否设置目标KH？', '确定', function () {
+                opt2 = $("#tarkh").val();
+                $.ajax({
+                    url: "{{ url_for('gettar') }}",
+                    type: "POST",
+                    data: JSON.stringify({opt2}),
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (data) {
+                        alert("当前目标KH为：" + data + "dKH");
+                    }
+
+                });
+            })
+        });
+}
+
+function addLoadEvent(func){	//此函数由Simon Willison编写
+    var oldonload = window.onload;
+    if (typeof window.onload != 'function'){
+        window.onload = func;
+    }else {
+        window.onload = function(){
+            oldonload();
+            func();
+        }
+    }
+}
+
+addLoadEvent(f1);
+addLoadEvent(f2);
+</script>
+
+<script>
+	var log = console.log.bind(console);
+	$(function () {
+		$(".btn1").click(function () {
+			jConfirm('重要提示', '该操作不可恢复, 是否继续该操作？', '确定', function () {
+      $.getJSON('/AutoBalanceKH', function(data) {
+        alert(data);
+      });
+				log('操作成功！')
+			})
+		});
+	})
+</script>
+<style>
+div.top
+{
+    text-align:center;
+    font-size:15px;
+    background-color:#cccccc;
+}
+div.time{
+    text-align:center;
+    font-size:10px;
+
+}
+  #PHdiv,
+  html,
+  body {
+    width: 100%;
+  }
+  #PHdiv {
+    height: 500px;
+  }
+    #KH,
+  html,
+  body {
+    width: 100%;
+  }
+  #KH {
+    height: 500px;
+  }
+    body
+    body,h1{margin: 0;padding:0}
+
+.result {
+  float: left;
+  width: 50%;
+}
+.KHtime1{
+  float: left;
+  width: 50%;
+  height: 120px;
+}
+</style>
+
+</head>
+<body>
+<div class="top" ><h1>Reef KH Tester</h1></div>
+<div class="time" >
+    <h1 ><span id="timestamp1"></span>&nbsp;&nbsp;<span id="timestamp"></span></h1>
+</div>
+
+<div class="result" >
+<h2 style="text-align:center;font-size:30px;">PH:<span style="font-size:30px;color: #1F7EFE;" id="realtimeph"></span></h2>
+<div style="width: 100%;height: 450px" id="PHdiv"></div>
+    <div class="KHtime1"><p style="margin-left:40px;font-size:20px;} ">当前目标KH为（0为关闭控制功能）<br/>Now Target KH(zero for disable): </p></div><div class="KHtime1"><span style="color: #1F7EFE;font-size:70px" id="tarkh1"></span><span>dKH</span></div>
+<form>
+<h3 style="margin-left:40px;">目标KH(输入0为关闭控制功能)Set Target KH（0 for disable）：<input style="width:140px;padding: 5px;margin: 20px;font-size:15px;"type="number" step="0.01" id="tarkh" name="tarkh">
+    <input style="font-size:20px;height: 35px; line-height: 35px; padding: 0 30px;margin: 20px;color: #fff;background-color: #1F7EFE; border-radius: 5px; cursor: pointer;" type="button" value="确定OK" class="tarkh"/>
+</h3>
+</form>
+</div>
+<div class="result">
+<div style="text-align:center;font-size:20px;"><h2 class="KH">KH:<span style="color: #1F7EFE;"id="realtimeKh"></span></h2></div>
+<div style="width: 100%;height: 450px" id="KH"></div>
+    <div style="height: 85px;">
+<div class="KHtime1"><p style="margin-left: 80px;font-size:20px"id=khtime>当前KH测试时间间隔:<br/>Now Test Interval:</p></div>
+    <div class="KHtime1"><span style="color: #1F7EFE;font-size:70px" id="khtime1"></span><span>小时(hour)</span></div>
+</div>
+
+<div style="margin-left:40px;">
+    <div style="font-size:20px;margin-left:40px;"><span>设置测试时间间隔(Set Test Interval)：</span></div>
+    <select style="font-size:20px;margin-left:40px;height: 35px;width: 130px;" id="para_region" name="para_region" onchange="change()">
+        <option value = 1 >1小时(hour)</option>
+        <option value = 2 >2小时(hour)</option>
+        <option value = 3 >3小时(hour)</option>
+        <option value = 4 >4小时(hour)</option>
+        <option value = 8 >8小时(hour)</option>
+        <option value = 12 >12小时(hour)</option>
+        <option value = 24 >24小时(hour)</option>
+    </select>
+    <input style="font-size:20px;height: 35px;width: 120px; line-height: 35px; padding: 0px;margin: 20px;color: #fff;background-color: #1F7EFE; border-radius: 5px; cursor: pointer;" type="button" value="确定OK" class="khtimer"/>
+
+        <p><a style="margin-left: 40px;font-size:20px" href="{{ url_for('KHhistry') }}" rel="external nofollow" >显示KH测试历史结果(Histry)</a></p>
+        <p style="font-size:20px;margin-left: 40px;"><a href="{{ url_for('setting') }}" rel="external nofollow" >设置(setting)</a></p>
+        <button class="bt4" style="font-size:20px;height: 35px; line-height: 35px; padding: 0 30px;margin-left: 40px;color: #fff;background-color: #1F7EFE; border-radius: 5px; cursor: pointer;">立即测试(Test Now)</button>
+     <div style="margin-left:20px">
+        <button class="mix" style="text-align:center;font-size:20px;height: 35px; line-height: 35px; padding: 0 30px;margin: 20px;color: #fff;background-color: #1F7EFE; border-radius: 5px; cursor: pointer;">搅拌反应仓(Mix reaction chamber)</button>
+        </div>
+
+</div>
+
+
+</div>
+
+<script>
+                var log11 = console.log.bind(console);
+	$(function () {
+		$(".mix").click(function () {
+			jConfirm('提示', '是否立即搅拌反应仓？', '确定', function () {
+      $.getJSON('/stir', function(data) {
+        alert(data);
+      });
+      log11('操作成功！')
+			})
+		});
+	})
+</script>
+
+
+<script type="text/javascript">
+  var myChart = echarts.init(document.getElementById('PHdiv'));
+  var myChart1 = echarts.init(document.getElementById('KH'));
+  window.onresize = function() {
+    myChart.resize();
+    myChart1.resize();
+  };
+
+
+</script>
+<script>
+    var myChart = echarts.init(document.getElementById("PHdiv"));
+    var option = {
+        yAxis: {},
+        xAxis: [{
+            type: "category",
+            data: []
+        }],
+        tooltip: {},
+        legend: {"textStyle": {
+            "fontSize": 30
+        }},
+        series: [{
+
+            type: 'line',
+            data: []
+        }]
+    }
+    myChart.setOption(option);
+    var update2 = function () {
+    $.get("/dbph").done(function (data) {
+        myChart.setOption({
+            xAxis: {
+                type: "category",
+                data: data.x_data
+            },
+            series: {
+
+                type: 'line',
+                smooth: true,
+                data: data.y_data,
+                label: {
+        show: true,
+        position: 'top',
+        textStyle: {
+          fontSize: 15
+        }
+      }
+            }
+        })
+    })
+        return update2;
+        };
+$(document).ready(function(){
+setInterval(update2(), 10000);
+});
+</script>
+<script>
+    var myChart1 = echarts.init(document.getElementById("KH"));
+    var option1 = {
+        yAxis: {},
+        xAxis: [{
+            type: "category",
+            data: []
+        }],
+        tooltip: {},
+        legend: {"textStyle": {
+            "fontSize": 30
+        }},
+        series: [{
+
+            type: 'line',
+            data: [],
+
+        }]
+    }
+    myChart1.setOption(option1);
+    var update3 = function () {
+    $.get("/dbkh").done(function (data) {
+        myChart1.setOption({
+            xAxis: {
+                type: "category",
+                data: data.x_data
+            },
+            series: {
+
+                type: 'line',
+                smooth: true,
+                data: data.y_data,
+                label: {
+        show: true,
+        position: 'top',
+        textStyle: {
+          fontSize: 15
+        }
+      }
+            }
+        })
+    })
+        return update3;
+        };
+$(document).ready(function(){
+setInterval(update3(), 10000);
+});
+</script>
+</body>
+
+</html>
