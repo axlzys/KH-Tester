@@ -4,6 +4,9 @@ The principle of this equipment is the hydrochloric acid titration method. Due t
 The hydrochloric acid used for detection was 0.1N (0.1mol/L) standard solution. After testing, the detected wastewater can be directly discharged into the tank.</br>
 This project follows the "GNU General Public License V3.0", you can carry out any secondary development and modification of this project, but DO NOT USE IT for commercial projects, and some functions have patents.</br>
 Instructions in English translated by Google</br>
+
+about the motor hat, maybe you can use the ADafruit motor hat,if you can change the code(about Raspi GPIO number)
+
 rasberry pi img file :https://www.dropbox.com/s/ij3ptd888jnfukf/KHTester.rar?dl=0
 
 --------------------------------------------------------------------------------------------------------------------------------
