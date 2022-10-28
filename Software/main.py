@@ -341,7 +341,7 @@ def autorunkhtest():
         khresult = (VHCL/samplev)*280
         khresult2 = round(khresult,1)
         if tar == 0:
-            tester().KHpumpon()
+            tester().KHpumpoff()
         elif tar - khresult2 > 0 and tar - khresult2 <0.5:
             tester().KHpumpoff()
         elif tar - khresult2 >= 0.5 and tar - khresult2 <1:
