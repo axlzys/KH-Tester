@@ -351,11 +351,11 @@ def autorunkhtest():
         elif tar - khresult2 >= 1 and tar - khresult2 <2:
             tester().KHpumpon()
             time.sleep(6)
-            tester().KHpumpoff(0)
+            tester().KHpumpoff()
         elif tar - khresult2 >= 2:
             tester().KHpumpon()
             time.sleep(10)
-            tester().KHpumpoff(0)
+            tester().KHpumpoff()
         KH1 = KHResult(Date=datetime.datetime.now().strftime('%Y-%m-%d') ,Time = datetime.datetime.now().strftime('%H:%M:%S'),KHresult = khresult2,ADDKH = 1)
         db.session.add(KH1)
         db.session.commit()
