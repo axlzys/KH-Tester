@@ -224,9 +224,9 @@ def readACIV():
 
 @app.route('/CalibrationKHpump')
 def CalibrationKHpump():
-    tester().pharmacypumpon()
+    tester().KHpumpon()
     time.sleep(10)
-    tester().pharmacypumpoff()
+    tester().KHpumpoff()
     return jsonify("滴定泵流量校准完成，请拿测量容积并输入。")
 
 @app.route('/getKHpump',methods=['GET','POST'])
@@ -341,21 +341,21 @@ def autorunkhtest():
         khresult = (VHCL/samplev)*280
         khresult2 = round(khresult,1)
         if tar == 0:
-            tester().pharmacypump(0)
+            tester().KHpumpon()
         elif tar - khresult2 > 0 and tar - khresult2 <0.5:
-            tester().pharmacypump(0)
+            tester().KHpumpoff()
         elif tar - khresult2 >= 0.5 and tar - khresult2 <1:
-            tester().pharmacypump(1)
+            tester().KHpumpon()
             time.sleep(3)
-            tester().pharmacypump(0)
+            tester().KHpumpoff()
         elif tar - khresult2 >= 1 and tar - khresult2 <2:
-            tester().pharmacypump(1)
+            tester().KHpumpon()
             time.sleep(6)
-            tester().pharmacypump(0)
+            tester().KHpumpoff(0)
         elif tar - khresult2 >= 2:
-            tester().pharmacypump(1)
+            tester().KHpumpon()
             time.sleep(10)
-            tester().pharmacypump(0)
+            tester().KHpumpoff(0)
         KH1 = KHResult(Date=datetime.datetime.now().strftime('%Y-%m-%d') ,Time = datetime.datetime.now().strftime('%H:%M:%S'),KHresult = khresult2,ADDKH = 1)
         db.session.add(KH1)
         db.session.commit()
